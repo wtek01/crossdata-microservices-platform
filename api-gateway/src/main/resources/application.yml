@@ -1,42 +1,5 @@
-server:
-  port: 8090
-
 spring:
   application:
     name: api-gateway
-  cloud:
-    gateway:
-      discovery:
-        locator:
-          enabled: true
-          lower-case-service-id: true
-  boot:
-    admin:
-      client:
-        url: http://localhost:8085  # URL du serveur Spring Boot Admin
-
-eureka:
-  client:
-    serviceUrl:
-      defaultZone: http://localhost:8761/eureka/
-    register-with-eureka: true
-    fetch-registry: true
-  instance:
-    prefer-ip-address: true
-    lease-renewal-interval-in-seconds: 10
-    health-check-url-path: /actuator/health
-
-management:
-  endpoints:
-    web:
-      exposure:
-        include: "*"
-  endpoint:
-    health:
-      show-details: always
-
-logging:
-  level:
-    org.springframework.cloud.gateway: DEBUG
-    org.springframework.cloud.netflix.eureka: DEBUG
-    org.springframework.boot.admin.client: DEBUG
+  config:
+    import: "optional:configserver:http://localhost:8888"

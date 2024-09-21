@@ -1,40 +1,5 @@
-server:
-  port: 8082
-
 spring:
   application:
     name: order-service
-  datasource:
-    url: jdbc:h2:mem:orderdb
-    driverClassName: org.h2.Driver
-  jpa:
-    database-platform: org.hibernate.dialect.H2Dialect
-  boot:
-    admin:
-      client:
-        url: http://localhost:8085  # URL du serveur Spring Boot Admin
-
-eureka:
-  client:
-    serviceUrl:
-      defaultZone: http://localhost:8761/eureka/
-    register-with-eureka: true
-    fetch-registry: true
-  instance:
-    prefer-ip-address: true
-    lease-renewal-interval-in-seconds: 10
-    health-check-url-path: /actuator/health
-
-management:
-  endpoints:
-    web:
-      exposure:
-        include: "*"
-  endpoint:
-    health:
-      show-details: always
-
-logging:
-  level:
-    org.springframework.cloud.netflix.eureka: DEBUG
-    org.springframework.boot.admin.client: DEBUG
+  config:
+    import: "optional:configserver:http://localhost:8888"
