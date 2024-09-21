@@ -1,30 +1,10 @@
-server:
-  port: 8085
-
 spring:
   application:
     name: admin-server
-  boot:
-    admin:
-      ui:
-        title: Crossdata Admin
+  config:
+    import: "optional:configserver:http://localhost:8888"
 
-eureka:
-  client:
-    serviceUrl:
-      defaultZone: http://localhost:8761/eureka/
-    register-with-eureka: true
-    fetch-registry: true
-
-management:
-  endpoints:
-    web:
-      exposure:
-        include: "*"
-  endpoint:
-    health:
-      show-details: always
-
-logging:
-  level:
-    com.crossdata.platform.admin: DEBUG
+# Vous pouvez garder le port ici si vous voulez vous assurer qu'il démarre sur le bon port
+# même si la connexion au Config Server échoue
+server:
+  port: 8085
