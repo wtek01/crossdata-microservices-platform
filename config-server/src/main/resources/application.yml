@@ -4,13 +4,16 @@ server:
 spring:
   application:
     name: config-server
-  profiles:
-    active: native
   cloud:
     config:
       server:
-        native:
-          search-locations: classpath:/config
+        git:
+          uri: https://github.com/wtek01/crossdata-config-repo.git
+          default-label: main
+          username: wtek01
+          password: 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
+          # Use your GitHub PAT here
+          # If using SSH, configure private key access instead
 
 eureka:
   client:
