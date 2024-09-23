@@ -2,7 +2,7 @@ spring:
   application:
     name: admin-server
   config:
-    import: "optional:configserver:http://localhost:8888"
+    import: "optional:configserver:http://config-server:8888"
 
 # Vous pouvez garder le port ici si vous voulez vous assurer qu'il démarre sur le bon port
 # même si la connexion au Config Server échoue
