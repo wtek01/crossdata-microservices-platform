@@ -1,0 +1,35 @@
+global:
+  scrape_interval: 15s
+
+scrape_configs:
+  - job_name: 'eureka-server'
+    static_configs:
+      - targets: ['eureka-server:8761']
+
+  - job_name: 'config-server'
+    static_configs:
+      - targets: ['config-server:8888']
+
+  - job_name: 'admin-server'
+    static_configs:
+      - targets: ['admin-server:8085']
+
+  - job_name: 'api-gateway'
+    static_configs:
+      - targets: ['api-gateway:8090']
+
+  - job_name: 'product-service'
+    static_configs:
+      - targets: ['product-service:8081']
+
+  - job_name: 'order-service'
+    static_configs:
+      - targets: ['order-service:8082']
+
+  - job_name: 'dashboard-service'
+    static_configs:
+      - targets: ['dashboard-service:8083']
+
+  - job_name: 'prometheus'
+    static_configs:
+      - targets: ['localhost:9090']

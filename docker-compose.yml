@@ -1,38 +1,38 @@
-version: '3.8'
-
 services:
   eureka-server:
-    image: openjdk:17-jdk-slim
+    build:
+      context: .
+      dockerfile: eureka-server/Dockerfile
     container_name: eureka-server
-    volumes:
-      - ./eureka-server/target/eureka-server-1.0-SNAPSHOT.jar:/app/app.jar
-    command: ["/bin/bash", "-c", "apt-get update && apt-get install -y curl && java -jar /app/app.jar"]
     ports:
       - "8761:8761"
     environment:
-      - EUREKA_CLIENT_REGISTER-WITH-EUREKA=false
-      - EUREKA_CLIENT_FETCH-REGISTRY=false
+      - EUREKA_CLIENT_REGISTER_WITH_EUREKA=false
+      - EUREKA_CLIENT_FETCH_REGISTRY=false
+      - JAVA_OPTS=-XX:+UseG1GC
     healthcheck:
       test: ["CMD-SHELL", "curl -f http://localhost:8761/actuator/health || exit 1"]
       interval: 30s
       timeout: 10s
       retries: 5
       start_period: 60s
+    mem_limit: 512m
+    cpus: 0.5
     networks:
       - microservices-net
 
   config-server:
-    image: openjdk:17-jdk-slim
+    build:
+      context: .
+      dockerfile: config-server/Dockerfile
     container_name: config-server
-    volumes:
-      - ./config-server/target/config-server-1.0-SNAPSHOT.jar:/app/app.jar
-    command: ["/bin/bash", "-c", "apt-get update && apt-get install -y curl && sleep 30 && java -jar /app/app.jar"]
-    environment:
-      - GIT_USERNAME=${GIT_USERNAME}
-      - GIT_PASSWORD=${GIT_PASSWORD}
-      - EUREKA_CLIENT_SERVICEURL_DEFAULTZONE=http://eureka-server:8761/eureka/
     ports:
       - "8888:8888"
+    env_file:
+      - .env
+    environment:
+      - EUREKA_CLIENT_SERVICEURL_DEFAULTZONE=http://eureka-server:8761/eureka/
+      - JAVA_OPTS=-XX:+UseG1GC
     depends_on:
       eureka-server:
         condition: service_healthy
@@ -42,20 +42,22 @@ services:
       timeout: 10s
       retries: 5
       start_period: 40s
+    mem_limit: 512m
+    cpus: 0.5
     networks:
       - microservices-net
 
   admin-server:
-    image: openjdk:17-jdk-slim
+    build:
+      context: .
+      dockerfile: admin-server/Dockerfile
     container_name: admin-server
-    volumes:
-      - ./admin-server/target/admin-server-1.0-SNAPSHOT.jar:/app/app.jar
-    command: ["/bin/bash", "-c", "apt-get update && apt-get install -y curl && sleep 60 && java -jar /app/app.jar"]
     ports:
       - "8085:8085"
     environment:
       - EUREKA_CLIENT_SERVICEURL_DEFAULTZONE=http://eureka-server:8761/eureka/
       - SPRING_CLOUD_CONFIG_URI=http://config-server:8888
+      - JAVA_OPTS=-XX:+UseG1GC
     depends_on:
       eureka-server:
         condition: service_healthy
@@ -67,24 +69,26 @@ services:
       timeout: 10s
       retries: 5
       start_period: 40s
+    mem_limit: 512m
+    cpus: 0.5
     networks:
       - microservices-net
 
   api-gateway:
-    image: openjdk:17-jdk-slim
+    build:
+      context: .
+      dockerfile: api-gateway/Dockerfile
     container_name: api-gateway
-    volumes:
-      - ./api-gateway/target/api-gateway-1.0-SNAPSHOT.jar:/app/app.jar
-    command: ["/bin/bash", "-c", "apt-get update && apt-get install -y curl && sleep 90 && java -jar /app/app.jar"]
     ports:
       - "8090:8090"
     environment:
       - EUREKA_CLIENT_SERVICEURL_DEFAULTZONE=http://eureka-server:8761/eureka/
       - SPRING_CLOUD_CONFIG_URI=http://config-server:8888
-      - SPRING_CLOUD_CONFIG_FAIL-FAST=true
-      - SPRING_CLOUD_CONFIG_RETRY_INITIAL-INTERVAL=3000
-      - SPRING_CLOUD_CONFIG_RETRY_MAX-INTERVAL=10000
-      - SPRING_CLOUD_CONFIG_RETRY_MAX-ATTEMPTS=20
+      - SPRING_CLOUD_CONFIG_FAIL_FAST=true
+      - SPRING_CLOUD_CONFIG_RETRY_INITIAL_INTERVAL=3000
+      - SPRING_CLOUD_CONFIG_RETRY_MAX_INTERVAL=10000
+      - SPRING_CLOUD_CONFIG_RETRY_MAX_ATTEMPTS=20
+      - JAVA_OPTS=-XX:+UseG1GC
     depends_on:
       eureka-server:
         condition: service_healthy
@@ -96,24 +100,26 @@ services:
       timeout: 10s
       retries: 5
       start_period: 40s
+    mem_limit: 512m
+    cpus: 0.5
     networks:
       - microservices-net
 
   product-service:
-    image: openjdk:17-jdk-slim
+    build:
+      context: .
+      dockerfile: product-service/Dockerfile
     container_name: product-service
-    volumes:
-      - ./product-service/target/product-service-1.0-SNAPSHOT.jar:/app/app.jar
-    command: ["/bin/bash", "-c", "apt-get update && apt-get install -y curl && sleep 120 && java -jar /app/app.jar"]
     ports:
       - "8081:8081"
     environment:
       - EUREKA_CLIENT_SERVICEURL_DEFAULTZONE=http://eureka-server:8761/eureka/
       - SPRING_CLOUD_CONFIG_URI=http://config-server:8888
-      - SPRING_CLOUD_CONFIG_FAIL-FAST=true
-      - SPRING_CLOUD_CONFIG_RETRY_INITIAL-INTERVAL=3000
-      - SPRING_CLOUD_CONFIG_RETRY_MAX-INTERVAL=10000
-      - SPRING_CLOUD_CONFIG_RETRY_MAX-ATTEMPTS=20
+      - SPRING_CLOUD_CONFIG_FAIL_FAST=true
+      - SPRING_CLOUD_CONFIG_RETRY_INITIAL_INTERVAL=3000
+      - SPRING_CLOUD_CONFIG_RETRY_MAX_INTERVAL=10000
+      - SPRING_CLOUD_CONFIG_RETRY_MAX_ATTEMPTS=20
+      - JAVA_OPTS=-XX:+UseG1GC
     depends_on:
       eureka-server:
         condition: service_healthy
@@ -125,24 +131,26 @@ services:
       timeout: 10s
       retries: 5
       start_period: 40s
+    mem_limit: 512m
+    cpus: 0.5
     networks:
       - microservices-net
 
   order-service:
-    image: openjdk:17-jdk-slim
+    build:
+      context: .
+      dockerfile: order-service/Dockerfile
     container_name: order-service
-    volumes:
-      - ./order-service/target/order-service-1.0-SNAPSHOT.jar:/app/app.jar
-    command: ["/bin/bash", "-c", "apt-get update && apt-get install -y curl && sleep 150 && java -jar /app/app.jar"]
     ports:
       - "8082:8082"
     environment:
       - EUREKA_CLIENT_SERVICEURL_DEFAULTZONE=http://eureka-server:8761/eureka/
       - SPRING_CLOUD_CONFIG_URI=http://config-server:8888
-      - SPRING_CLOUD_CONFIG_FAIL-FAST=true
-      - SPRING_CLOUD_CONFIG_RETRY_INITIAL-INTERVAL=3000
-      - SPRING_CLOUD_CONFIG_RETRY_MAX-INTERVAL=10000
-      - SPRING_CLOUD_CONFIG_RETRY_MAX-ATTEMPTS=20
+      - SPRING_CLOUD_CONFIG_FAIL_FAST=true
+      - SPRING_CLOUD_CONFIG_RETRY_INITIAL_INTERVAL=3000
+      - SPRING_CLOUD_CONFIG_RETRY_MAX_INTERVAL=10000
+      - SPRING_CLOUD_CONFIG_RETRY_MAX_ATTEMPTS=20
+      - JAVA_OPTS=-XX:+UseG1GC
     depends_on:
       eureka-server:
         condition: service_healthy
@@ -154,24 +162,26 @@ services:
       timeout: 10s
       retries: 5
       start_period: 40s
+    mem_limit: 512m
+    cpus: 0.5
     networks:
       - microservices-net
 
   dashboard-service:
-    image: openjdk:17-jdk-slim
+    build:
+      context: .
+      dockerfile: dashboard-service/Dockerfile
     container_name: dashboard-service
-    volumes:
-      - ./dashboard-service/target/dashboard-service-1.0-SNAPSHOT.jar:/app/app.jar
-    command: ["/bin/bash", "-c", "apt-get update && apt-get install -y curl && sleep 180 && java -jar /app/app.jar"]
     ports:
       - "8083:8083"
     environment:
       - EUREKA_CLIENT_SERVICEURL_DEFAULTZONE=http://eureka-server:8761/eureka/
       - SPRING_CLOUD_CONFIG_URI=http://config-server:8888
-      - SPRING_CLOUD_CONFIG_FAIL-FAST=true
-      - SPRING_CLOUD_CONFIG_RETRY_INITIAL-INTERVAL=3000
-      - SPRING_CLOUD_CONFIG_RETRY_MAX-INTERVAL=10000
-      - SPRING_CLOUD_CONFIG_RETRY_MAX-ATTEMPTS=20
+      - SPRING_CLOUD_CONFIG_FAIL_FAST=true
+      - SPRING_CLOUD_CONFIG_RETRY_INITIAL_INTERVAL=3000
+      - SPRING_CLOUD_CONFIG_RETRY_MAX_INTERVAL=10000
+      - SPRING_CLOUD_CONFIG_RETRY_MAX_ATTEMPTS=20
+      - JAVA_OPTS=-XX:+UseG1GC
     depends_on:
       eureka-server:
         condition: service_healthy
@@ -183,6 +193,28 @@ services:
       timeout: 10s
       retries: 5
       start_period: 40s
+    mem_limit: 512m
+    cpus: 0.5
+    networks:
+      - microservices-net
+
+  prometheus:
+    image: prom/prometheus:latest
+    container_name: prometheus
+    volumes:
+      - ./prometheus/prometheus.yml:/etc/prometheus/prometheus.yml
+    ports:
+      - "9090:9090"
+    networks:
+      - microservices-net
+
+  grafana:
+    image: grafana/grafana:latest
+    container_name: grafana
+    ports:
+      - "3000:3000"
+    depends_on:
+      - prometheus
     networks:
       - microservices-net
 

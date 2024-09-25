@@ -1,24 +1,48 @@
-# Ordre de Démarrage des Services et ports
-config-server : 8888
-eureka-server : 8761
-admin-server : 8085
-api-gateway : 8090
-product-service : 8081
-order-service : 8082
-dashboard-service : 8083
+# CrossData Microservices Platform
+
+## Description
+
+Cette plateforme est composée de plusieurs microservices orchestrés avec Docker Compose, utilisant Spring Boot, Eureka, Config Server, et Spring Cloud Gateway. Elle inclut également des outils de monitoring tels que Prometheus et Grafana.
+
+## Architecture
+
+- **Eureka Server** : Service de découverte des microservices.
+- **Config Server** : Gestion centralisée des configurations via Git.
+- **Admin Server** : Surveillance et gestion des microservices via Spring Boot Admin.
+- **API Gateway** : Point d'entrée unique pour les requêtes externes.
+- **Product Service** : Service de gestion des produits.
+- **Order Service** : Service de gestion des commandes.
+- **Dashboard Service** : Service de tableau de bord.
+- **Prometheus** : Collecte des métriques.
+- **Grafana** : Visualisation des métriques.
+
+## Prérequis
+
+- Docker et Docker Compose installés.
+- Maven installé pour construire les microservices.
+
+## Installation
+
+1. **Cloner le dépôt**
+
+   ```bash
+   git clone https://github.com/votre-repo/crossdata-microservices-platform.git
+   cd crossdata-microservices-platform
+
+# Accès aux services
+   - Eureka Server : http://localhost:8761.
+     - Config Server : http://localhost:8888.
+     - Admin Server : http://localhost:8085
+     - API Gateway : http://localhost:8090
+     - Product Service : http://localhost:8081
+     - Order Service : http://localhost:8082
+     - Dashboard Service : http://localhost:8083
+     - Prometheus : http://localhost:9090
+     - Grafana : http://localhost:3000
+# Monitoring
+     - Prometheus collecte les métriques des microservices.
+     - Grafana visualise les métriques collectées par Prometheus.
 
 # TODO 
  - Docker 
  - React
-
-# GIT CONFIG SERVER
-The error message indicates that there's an issue with the configuration 
-of your Config Server. Specifically, it's saying that you need to 
-configure a URI for the Git repository if you're using the git 
-profile. Let's address this issue:
-
-First, we need to determine if you intend to use Git as a 
-backend for your configuration files or if you want to use 
-the local filesystem (which you indicated earlier with the native profile).
-If you want to use the local filesystem, we need to ensure that the
-native profile is active and that the correct search locations are specified.

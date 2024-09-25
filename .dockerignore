@@ -1,0 +1,17 @@
+# Ignorer tous les fichiers
+**
+
+# Inclure les répertoires de services, le script wait-for-it.sh, le POM parent et les fichiers nécessaires
+!eureka-server/
+!config-server/
+!admin-server/
+!api-gateway/
+!product-service/
+!order-service/
+!dashboard-service/
+!wait-for-it.sh
+!prometheus/
+!grafana/
+!pom.xml
+!*.yml
+!*.md
