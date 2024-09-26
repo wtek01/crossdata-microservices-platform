@@ -43,6 +43,14 @@ Cette plateforme est composée de plusieurs microservices orchestrés avec Docke
      - Prometheus collecte les métriques des microservices.
      - Grafana visualise les métriques collectées par Prometheus.
 
+# DOCKER 
+ - docker-compose up
+ - docker-compose up -d
+ - docker-compose build 
+ - docker-compose build
+ - docker-compose down
+ - docker image prune
+ - docker image prune -a
 # TODO 
  - Docker 
  - React

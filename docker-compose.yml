@@ -1,8 +1,12 @@
+version: '3.8'
+
 services:
   eureka-server:
     build:
       context: .
-      dockerfile: eureka-server/Dockerfile
+      dockerfile: Dockerfile
+      args:
+        SERVICE_NAME: eureka-server
     container_name: eureka-server
     ports:
       - "8761:8761"
@@ -20,7 +24,9 @@ services:
   config-server:
     build:
       context: .
-      dockerfile: config-server/Dockerfile
+      dockerfile: Dockerfile
+      args:
+        SERVICE_NAME: config-server
     container_name: config-server
     ports:
       - "8888:8888"
@@ -43,7 +49,9 @@ services:
   admin-server:
     build:
       context: .
-      dockerfile: admin-server/Dockerfile
+      dockerfile: Dockerfile
+      args:
+        SERVICE_NAME: admin-server
     container_name: admin-server
     ports:
       - "8085:8085"
@@ -66,7 +74,9 @@ services:
   api-gateway:
     build:
       context: .
-      dockerfile: api-gateway/Dockerfile
+      dockerfile: Dockerfile
+      args:
+        SERVICE_NAME: api-gateway
     container_name: api-gateway
     ports:
       - "8090:8090"
@@ -89,7 +99,9 @@ services:
   product-service:
     build:
       context: .
-      dockerfile: product-service/Dockerfile
+      dockerfile: Dockerfile
+      args:
+        SERVICE_NAME: product-service
     container_name: product-service
     ports:
       - "8081:8081"
@@ -112,7 +124,9 @@ services:
   order-service:
     build:
       context: .
-      dockerfile: order-service/Dockerfile
+      dockerfile: Dockerfile
+      args:
+        SERVICE_NAME: order-service
     container_name: order-service
     ports:
       - "8082:8082"
@@ -135,7 +149,9 @@ services:
   dashboard-service:
     build:
       context: .
-      dockerfile: dashboard-service/Dockerfile
+      dockerfile: Dockerfile
+      args:
+        SERVICE_NAME: dashboard-service
     container_name: dashboard-service
     ports:
       - "8083:8083"
