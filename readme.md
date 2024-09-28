@@ -30,7 +30,7 @@ Cette plateforme est composée de plusieurs microservices orchestrés avec Docke
    cd crossdata-microservices-platform
 
 # Accès aux services
-   - Eureka Server : http://localhost:8761.
+     - Eureka Server : http://localhost:8761.
      - Config Server : http://localhost:8888.
      - Admin Server : http://localhost:8085
      - API Gateway : http://localhost:8090
@@ -44,13 +44,29 @@ Cette plateforme est composée de plusieurs microservices orchestrés avec Docke
      - Grafana visualise les métriques collectées par Prometheus.
 
 # DOCKER 
- - docker-compose up
- - docker-compose up -d
- - docker-compose build 
- - docker-compose build
- - docker-compose down
- - docker image prune
- - docker image prune -a
+Certainement. Voici la liste des commandes avec une brève explication pour chacune :
+
+   - <b>docker-compose down</b> : Arrête et supprime tous les conteneurs, réseaux et volumes définis dans le docker-compose.yml.
+   - docker image prune : Supprime toutes les images non utilisées et non taguées pour libérer de l'espace disque.
+   - docker image prune -a : Supprime toutes les images non utilisées, y compris celles qui sont taguées.
+   - mvn clean install : Nettoie le projet Maven, compile le code, exécute les tests et installe les artefacts dans le référentiel local.
+   - docker-compose build : Reconstruit toutes les images des services définis dans le docker-compose.yml.
+   - docker-compose up -d : Démarre tous les services définis dans le docker-compose.yml en mode détaché (arrière-plan).
+   - docker-compose ps : Affiche l'état actuel de tous les services définis dans le docker-compose.yml.
+   - docker-compose logs -f : Affiche les logs en temps réel de tous les services.
+   - docker-compose logs -f dashboard-service : Affiche les logs en temps réel spécifiquement pour le service dashboard.
+
+# Redémarrage d'un Service Spécifique après Modification du Code
+```bash
+docker-compose build dashboard-service : Reconstruire l''image du service
+docker-compose stop dashboard-service : Arrêter le service existant
+docker-compose up -d dashboard-service : Démarrer le service avec la nouvelle image
+docker-compose up -d --build dashboard-service : Alternative : Reconstruire et redémarrer en une seule commande
+docker-compose ps dashboard-service  : Vérifier l''état du service
+docker-compose logs -f dashboard-service : Consulter les logs du service redémarré
+```
+Ces commandes vous permettent de gérer efficacement votre environnement Docker, de la suppression des anciens conteneurs à la reconstruction et au démarrage de nouveaux services, tout en surveillant leur état et leurs logs.
+
 # TODO 
  - Docker 
  - React
